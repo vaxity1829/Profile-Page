@@ -1409,6 +1409,7 @@
             // YouTube embed with autoplay, loop, no controls
             // Using a popular Bad Apple video
             const videoId = 'FtutLA63Cp8'; // Bad Apple!! feat. nomico
+            // Start muted to bypass ads, then unmute via JS
             const embedUrl = `https://www.youtube.com/embed/${videoId}?` +
                 `autoplay=1&` +
                 `loop=1&` +
@@ -1417,17 +1418,41 @@
                 `modestbranding=1&` +
                 `rel=0&` +
                 `fs=0&` +
-                `mute=0`;
+                `mute=1&` +
+                `iv_load_policy=3&` +
+                `disablekb=1`;
+
+            // Store for unmuting later
+            window.ytVideoId = videoId;
 
             container.innerHTML = `<iframe id="yt-iframe" width="1" height="1" src="${embedUrl}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
             document.body.appendChild(container);
 
             ytPlayer = document.getElementById('yt-iframe');
             isYtPlaying = true;
-            console.log('Bad Apple YouTube: ON (autoplay attempted)');
+            console.log('Bad Apple YouTube: ON (muted to bypass ads)');
 
-            // Note: Browsers block autoplay with sound until user interaction
-            // User must click page first, or press N to toggle
+            // Unmute after 2 seconds to bypass pre-roll ads
+            // YouTube doesn't show ads on muted videos
+            setTimeout(() => {
+                if (isYtPlaying && ytPlayer) {
+                    // Reload with sound enabled
+                    const unmuteUrl = `https://www.youtube.com/embed/${videoId}?` +
+                        `autoplay=1&` +
+                        `loop=1&` +
+                        `playlist=${videoId}&` +
+                        `controls=0&` +
+                        `modestbranding=1&` +
+                        `rel=0&` +
+                        `fs=0&` +
+                        `mute=0&` +
+                        `start=2&` + // Skip first 2 seconds we already played muted
+                        `iv_load_policy=3&` +
+                        `disablekb=1`;
+                    ytPlayer.src = unmuteUrl;
+                    console.log('Bad Apple YouTube: Unmuted (ads bypassed)');
+                }
+            }, 2000);
         }
 
         function destroyYtPlayer() {
