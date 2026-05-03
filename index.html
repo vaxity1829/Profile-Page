@@ -453,6 +453,117 @@
         .profile-link:hover .external-icon {
             opacity: 1;
         }
+
+        /* === MOBILE RESPONSIVE === */
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+                padding: 80px 16px 20px;
+                gap: 20px;
+                overflow-x: hidden;
+                min-height: auto;
+                justify-content: flex-start;
+            }
+
+            .side-panel {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 100%;
+                gap: 12px;
+            }
+
+            .panel-box {
+                width: calc(50% - 6px);
+                max-width: 280px;
+            }
+
+            .profile-container {
+                width: 100%;
+                max-width: 400px;
+                order: -1;
+            }
+
+            .top-menu {
+                top: 10px;
+                left: 10px;
+            }
+
+            .top-menu a {
+                font-size: 14px;
+                padding: 6px 10px;
+            }
+
+            .clock-time {
+                font-size: 20px;
+            }
+
+            .clock-date {
+                font-size: 8px;
+            }
+
+            #visualizer-canvas, #badapple-canvas {
+                height: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .panel-box {
+                width: 100%;
+                max-width: none;
+            }
+
+            .display-name {
+                font-size: 18px;
+            }
+
+            .about-title {
+                font-size: 10px;
+            }
+
+            .connection-item {
+                padding: 6px 10px;
+            }
+
+            .connection-item img {
+                width: 28px;
+                height: 28px;
+            }
+
+            .connection-name {
+                font-size: 12px;
+            }
+
+            .connection-type {
+                font-size: 10px;
+            }
+
+            .banner { height: 80px; }
+
+            .avatar-outer {
+                top: 40px;
+                width: 76px;
+                height: 76px;
+            }
+
+            .avatar-inner {
+                width: 68px;
+                height: 68px;
+            }
+
+            .profile-body {
+                padding-top: 48px;
+            }
+
+            .clock-box {
+                padding: 12px;
+            }
+
+            .clock-time {
+                font-size: 18px;
+                letter-spacing: 1px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1395,100 +1506,9 @@
             }
         });
 
-        // === BAD APPLE YOUTUBE PLAYER ===
-        // Embeds YouTube video for authentic Bad Apple audio
-        let ytPlayer = null;
-        let isYtPlaying = false;
-
-        // Create hidden YouTube iframe
-        function createYtPlayer() {
-            const container = document.createElement('div');
-            container.style.cssText = 'position:fixed; bottom:0; right:0; width:1px; height:1px; overflow:hidden; opacity:0; pointer-events:none; z-index:-9999;';
-            container.id = 'yt-player-container';
-
-            // YouTube embed with autoplay, loop, no controls
-            // Using a popular Bad Apple video
-            const videoId = 'FtutLA63Cp8'; // Bad Apple!! feat. nomico
-            // Start muted to bypass ads, then unmute via JS
-            const embedUrl = `https://www.youtube.com/embed/${videoId}?` +
-                `autoplay=1&` +
-                `loop=1&` +
-                `playlist=${videoId}&` +
-                `controls=0&` +
-                `modestbranding=1&` +
-                `rel=0&` +
-                `fs=0&` +
-                `mute=1&` +
-                `iv_load_policy=3&` +
-                `disablekb=1`;
-
-            // Store for unmuting later
-            window.ytVideoId = videoId;
-
-            container.innerHTML = `<iframe id="yt-iframe" width="1" height="1" src="${embedUrl}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-            document.body.appendChild(container);
-
-            ytPlayer = document.getElementById('yt-iframe');
-            isYtPlaying = true;
-            console.log('Bad Apple YouTube: ON (muted to bypass ads)');
-
-            // Unmute after 2 seconds to bypass pre-roll ads
-            // YouTube doesn't show ads on muted videos
-            setTimeout(() => {
-                if (isYtPlaying && ytPlayer) {
-                    // Reload with sound enabled
-                    const unmuteUrl = `https://www.youtube.com/embed/${videoId}?` +
-                        `autoplay=1&` +
-                        `loop=1&` +
-                        `playlist=${videoId}&` +
-                        `controls=0&` +
-                        `modestbranding=1&` +
-                        `rel=0&` +
-                        `fs=0&` +
-                        `mute=0&` +
-                        `start=2&` + // Skip first 2 seconds we already played muted
-                        `iv_load_policy=3&` +
-                        `disablekb=1`;
-                    ytPlayer.src = unmuteUrl;
-                    console.log('Bad Apple YouTube: Unmuted (ads bypassed)');
-                }
-            }, 2000);
-        }
-
-        function destroyYtPlayer() {
-            const container = document.getElementById('yt-player-container');
-            if (container) {
-                container.remove();
-            }
-            ytPlayer = null;
-            isYtPlaying = false;
-            console.log('Bad Apple YouTube: OFF');
-        }
-
-        // Press 'N' to toggle YouTube player
-        document.addEventListener('keydown', (e) => {
-            if (e.key.toLowerCase() === 'n') {
-                toggleBadAppleYt();
-            }
-        });
-
-        function toggleBadAppleYt() {
-            if (!isYtPlaying) {
-                createYtPlayer();
-            } else {
-                destroyYtPlayer();
-            }
-        }
-
-        // Auto-attempt on first click (browser may block audio until interaction)
-        let ytInitAttempted = false;
-        document.addEventListener('click', () => {
-            if (!ytInitAttempted && !isYtPlaying) {
-                ytInitAttempted = true;
-                // Uncomment below to auto-start on first click:
-                // createYtPlayer();
-            }
-        }, { once: true });
+        // === AUDIO VISUALIZER ONLY ===
+        // Visualizer shows synthetic Bad Apple pattern
+        // No external audio - visualizer runs standalone
 
         function triggerMonochromeMode() {
             if (isMonochrome) {
