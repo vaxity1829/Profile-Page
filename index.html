@@ -37,11 +37,13 @@
             flex-direction: column;
             gap: 20px;
             min-width: 280px;
+            position: relative;
+            z-index: 1;
         }
 
         .panel-box {
             background-color: var(--bg-card);
-            border-radius: 8px;
+            border-radius: 0;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
@@ -99,10 +101,11 @@
         .profile-container {
             width: 340px;
             background-color: var(--bg-card);
-            border-radius: 8px;
+            border-radius: 0;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             position: relative;
+            z-index: 1;
         }
 
         .banner { height: 105px; background-color: #5c0e10; }
@@ -114,7 +117,7 @@
             width: 92px;
             height: 92px;
             background-color: var(--bg-card);
-            border-radius: 50%;
+            border-radius: 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -154,7 +157,7 @@
             height: 20px;
             background-color: var(--status-online);
             border: 4px solid var(--bg-card);
-            border-radius: 50%;
+            border-radius: 0;
             z-index: 7;
         }
 
@@ -166,10 +169,10 @@
             gap: 4px;
             padding: 4px;
             background: rgba(0,0,0,0.4);
-            border-radius: 4px;
+            border-radius: 0;
         }
 
-        .badge { width: 20px; height: 20px; cursor: pointer; transition: transform 0.2s; }
+        .badge { width: 20px; height: 20px; transition: transform 0.2s; }
         .badge:hover { transform: scale(1.3); }
         .badges-area .badge:nth-child(2) { width: 17px; height: 17px; align-self: center; }
 
@@ -199,8 +202,8 @@
             font-size: 14px;
             font-weight: 600;
             color: var(--text-muted);
-            cursor: pointer;
-            transition: color 0.2s, transform 0.2s;
+            transition: color 0.2s, transform 0.2s, filter 0.15s;
+            will-change: transform, filter;
         }
         .tab:hover {
             color: var(--text-header);
@@ -279,10 +282,10 @@
             font-size: 12px;
             color: var(--text-muted);
             font-style: italic;
-            cursor: pointer;
-            transition: color 0.2s, background-color 0.2s;
+            transition: color 0.2s, background-color 0.2s, filter 0.15s;
             padding: 8px;
-            border-radius: 4px;
+            border-radius: 0;
+            will-change: filter;
         }
         .note-input:hover {
             color: var(--text-normal);
@@ -296,31 +299,35 @@
             font-family: inherit;
             width: 100%;
             outline: none;
-            cursor: none;
         }
         .note-input input::placeholder {
             color: var(--text-muted);
             font-style: italic;
         }
-            #cursor-canvas {
+        #cursor-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
             pointer-events: none;
-            z-index: 9999;
+            z-index: 999999;
         }
 
-        * { cursor: none !important; }
-        *:hover { cursor: none !important; }
-        button, a, input, textarea, select, [role="button"] { cursor: none !important; }
+
+        * { cursor: none; }
+        *:hover { cursor: none; }
 
         .top-menu {
             position: fixed;
             top: 20px;
             left: 20px;
-            z-index: 1000;
+            z-index: 10000;
+            pointer-events: auto;
+        }
+
+        .top-menu * {
+            pointer-events: auto;
         }
 
         .top-menu a {
@@ -330,7 +337,6 @@
             font-weight: 600;
             background: rgba(17, 18, 20, 0.9);
             padding: 10px 16px;
-            border-radius: 8px;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -376,7 +382,7 @@
             top: calc(100% + 8px);
             left: 0;
             background: rgba(17, 18, 20, 0.95);
-            border-radius: 8px;
+            border-radius: 0;
             border: 1px solid rgba(255,255,255,0.1);
             padding: 12px 16px;
             min-width: 220px;
@@ -398,7 +404,7 @@
             height: 18px;
             color: var(--text-header);
             flex-shrink: 0;
-            border-radius: 4px;
+            border-radius: 0;
             object-fit: cover;
         }
 
@@ -407,10 +413,11 @@
             align-items: center;
             gap: 8px;
             text-decoration: none;
-            color: var(--text-header);
+            color: var(--text-normal);
             padding: 8px;
-            border-radius: 6px;
-            transition: background 0.2s ease;
+            border-radius: 0;
+            transition: background 0.2s ease, filter 0.15s;
+            will-change: filter;
         }
 
         .profile-link:hover {
@@ -458,24 +465,26 @@
         @media (max-width: 900px) {
             body {
                 flex-direction: column;
-                padding: 80px 16px 20px;
-                gap: 20px;
-                overflow-x: hidden;
-                min-height: auto;
+                padding: 70px 16px 40px;
+                gap: 16px;
+                overflow: visible;
+                min-height: 100vh;
                 justify-content: flex-start;
+                align-items: center;
+                height: auto;
             }
 
             .side-panel {
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
+                flex-direction: column;
+                align-items: center;
                 width: 100%;
-                gap: 12px;
+                max-width: 400px;
+                gap: 16px;
             }
 
             .panel-box {
-                width: calc(50% - 6px);
-                max-width: 280px;
+                width: 100%;
+                max-width: 400px;
             }
 
             .profile-container {
@@ -485,8 +494,8 @@
             }
 
             .top-menu {
-                top: 10px;
-                left: 10px;
+                top: 12px;
+                left: 12px;
             }
 
             .top-menu a {
@@ -495,73 +504,102 @@
             }
 
             .clock-time {
-                font-size: 20px;
+                font-size: 24px;
             }
 
             .clock-date {
-                font-size: 8px;
+                font-size: 10px;
             }
 
             #visualizer-canvas, #badapple-canvas {
-                height: 150px;
+                height: 180px;
+            }
+
+            #bg-canvas {
+                position: fixed;
             }
         }
 
         @media (max-width: 480px) {
+            body {
+                padding: 60px 12px 30px;
+            }
+
             .panel-box {
-                width: 100%;
-                max-width: none;
+                border-radius: 12px;
             }
 
             .display-name {
-                font-size: 18px;
+                font-size: 20px;
+            }
+
+            .username-tag {
+                font-size: 13px;
+            }
+
+            .pronouns-badge {
+                font-size: 11px;
+                padding: 2px 8px;
             }
 
             .about-title {
-                font-size: 10px;
+                font-size: 11px;
+            }
+
+            .bio-text {
+                font-size: 13px;
             }
 
             .connection-item {
-                padding: 6px 10px;
+                padding: 10px 12px;
             }
 
             .connection-item img {
-                width: 28px;
-                height: 28px;
+                width: 32px;
+                height: 32px;
             }
 
             .connection-name {
-                font-size: 12px;
+                font-size: 13px;
             }
 
             .connection-type {
-                font-size: 10px;
+                font-size: 11px;
             }
 
-            .banner { height: 80px; }
+            .banner { height: 90px; }
 
             .avatar-outer {
-                top: 40px;
+                top: 50px;
+                width: 84px;
+                height: 84px;
+            }
+
+            .avatar-inner {
                 width: 76px;
                 height: 76px;
             }
 
-            .avatar-inner {
-                width: 68px;
-                height: 68px;
-            }
-
             .profile-body {
-                padding-top: 48px;
+                padding: 52px 14px 14px;
             }
 
             .clock-box {
-                padding: 12px;
+                padding: 16px;
             }
 
             .clock-time {
-                font-size: 18px;
-                letter-spacing: 1px;
+                font-size: 22px;
+                letter-spacing: 2px;
+            }
+
+            .clock-date {
+                font-size: 9px;
+            }
+
+            .tab {
+                font-size: 13px;
+                padding: 10px 0;
             }
         }
     </style>
@@ -703,6 +741,9 @@
         let prevMouseY = window.innerHeight / 2;
         let mouseVX = 0;
         let mouseVY = 0;
+        // Smoothed velocity for effects
+        let smoothedVX = 0;
+        let smoothedVY = 0;
 
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
@@ -729,10 +770,40 @@
             prevMouseY = mouseY;
         });
 
-        const interactives = document.querySelectorAll('.tab, .note-input, .badge, .avatar-inner, .pfp');
+        const interactives = document.querySelectorAll('.tab, .note-input, .badge, .avatar-inner, .pfp, .profile-link');
+
+        // Bracket morph state - 4 corners, each with current x/y and target x/y
+        const bracketCorners = [
+            { x: 0, y: 0, tx: 0, ty: 0 }, // top-left
+            { x: 0, y: 0, tx: 0, ty: 0 }, // top-right
+            { x: 0, y: 0, tx: 0, ty: 0 }, // bottom-left
+            { x: 0, y: 0, tx: 0, ty: 0 }, // bottom-right
+        ];
+        let hoveredRect = null;
+        let hoveredEl = null;
+
+        // X indicator position for smooth following
+        const xIndicator = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
+        function hoverEnter(e) {
+            hoverTarget = 1;
+            hoveredEl = e.currentTarget;
+            hoveredRect = hoveredEl.getBoundingClientRect();
+            // Initialize bracket positions at cursor
+            for (let c of bracketCorners) {
+                c.x = mouseX;
+                c.y = mouseY;
+            }
+        }
+        function hoverLeave() {
+            hoverTarget = 0;
+            hoveredRect = null;
+            hoveredEl = null;
+        }
+
         interactives.forEach(el => {
-            el.addEventListener('mouseenter', () => { hoverTarget = 1; });
-            el.addEventListener('mouseleave', () => { hoverTarget = 0; });
+            el.addEventListener('mouseenter', hoverEnter);
+            el.addEventListener('mouseleave', hoverLeave);
         });
 
         window.addEventListener('resize', resizeCanvas);
@@ -744,6 +815,10 @@
             mouseVY = mouseY - prevMouseY;
             prevMouseX = mouseX;
             prevMouseY = mouseY;
+
+            // Smooth velocity for effects
+            smoothedVX += (mouseVX - smoothedVX) * 0.15;
+            smoothedVY += (mouseVY - smoothedVY) * 0.15;
 
             if (trail.length === 0) {
                 for (let i = 0; i < maxTrailLength; i++) {
@@ -771,15 +846,21 @@
             // Hide cursor when hovering over Pong
             const shouldShowCursor = cursorVisible && !isHoveringPong;
 
-            // Fade trail in/out smoothly
+            // Fade trail based on hover state - trail fades OUT when hovering
+            const trailTarget = shouldShowCursor ? (1 - hoverAnim) : (shouldShowCursor ? 1 : 0);
             if (shouldShowCursor) {
-                trailFade = Math.min(1, trailFade + 0.08);
+                trailFade += (trailTarget - trailFade) * 0.12;
             } else {
                 trailFade = Math.max(0, trailFade - 0.03);
             }
 
-            // Continue trail physics even when fading out
-            if (trailFade > 0) {
+            // Draw trail (fades as brackets appear)
+            if (trailFade > 0.01) {
+                // Calculate velocity-based stretch and rotation using smoothed velocity
+                const velocity = Math.sqrt(smoothedVX * smoothedVX + smoothedVY * smoothedVY);
+                const velocityAngle = Math.atan2(smoothedVY, smoothedVX);
+                const stretchFactor = 1 + Math.min(velocity * 0.05, 1.2); // More visible stretch
+
                 ctx.lineCap = 'round';
                 ctx.lineJoin = 'round';
 
@@ -788,10 +869,11 @@
                     const point = trail[i];
                     const next = trail[i + 1];
 
-                    const size = 28;
+                    const baseSize = 28 * (1 - hoverAnim * 0.7);
+                    const size = baseSize * stretchFactor; // Stretch based on velocity
                     const colorIndex = Math.min(Math.floor(t * colors.length), colors.length - 1);
                     const color = colors[colorIndex];
-                    const alpha = trailFade * (0.3 + t * 0.7); // Fade trail tip first
+                    const alpha = trailFade * (0.3 + t * 0.7);
 
                     ctx.globalAlpha = alpha;
 
@@ -816,27 +898,109 @@
                 ctx.globalAlpha = 1;
             }
 
-            hoverAnim += (hoverTarget - hoverAnim) * 0.15;
+            hoverAnim += (hoverTarget - hoverAnim) * 0.1;
 
-            // Only show cursor dot when fully visible
-            if (shouldShowCursor && trailFade > 0.5) {
-                const cursorSize = 14 + hoverAnim * 10;
-                const glowSize = 12 + hoverAnim * 20;
-
-                if (hoverAnim > 0.1) {
-                    ctx.beginPath();
-                    ctx.arc(mouseX, mouseY, cursorSize + 8, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(255, 51, 51, ' + (hoverAnim * 0.15) + ')';
-                    ctx.fill();
+            // Morph cursor trail into corner brackets (LettuceDE style)
+            if (hoverAnim > 0.005) {
+                // Get live rect for tracking button animations
+                if (hoveredEl) {
+                    const liveRect = hoveredEl.getBoundingClientRect();
+                    const pad = 6;
+                    // Corners stay at button positions, lines expand outward
+                    bracketCorners[0].x = liveRect.left - pad;
+                    bracketCorners[0].y = liveRect.top - pad;
+                    bracketCorners[1].x = liveRect.right + pad;
+                    bracketCorners[1].y = liveRect.top - pad;
+                    bracketCorners[2].x = liveRect.left - pad;
+                    bracketCorners[2].y = liveRect.bottom + pad;
+                    bracketCorners[3].x = liveRect.right + pad;
+                    bracketCorners[3].y = liveRect.bottom + pad;
                 }
 
+                // Bracket lines expand outward from corners (LettuceDE style)
+                const brLen = 12 * Math.min(hoverAnim * 1.5, 1);
+                const alpha = hoverAnim;
+
+                // Glow effect behind brackets
+                ctx.shadowColor = 'rgba(255, 51, 51, 0.4)';
+                ctx.shadowBlur = 8 * hoverAnim;
+                ctx.strokeStyle = `rgba(255, 51, 51, ${alpha})`;
+                ctx.lineWidth = 3;
+                ctx.lineCap = 'square';
+                ctx.lineJoin = 'miter';
+
+                // Top-left bracket (expands down and right)
                 ctx.beginPath();
-                ctx.arc(mouseX, mouseY, cursorSize, 0, Math.PI * 2);
-                ctx.fillStyle = '#ff3333';
-                ctx.shadowColor = '#ff3333';
-                ctx.shadowBlur = glowSize;
-                ctx.fill();
+                ctx.moveTo(bracketCorners[0].x, bracketCorners[0].y + brLen);
+                ctx.lineTo(bracketCorners[0].x, bracketCorners[0].y);
+                ctx.lineTo(bracketCorners[0].x + brLen, bracketCorners[0].y);
+                ctx.stroke();
+
+                // Top-right bracket (expands down and left)
+                ctx.beginPath();
+                ctx.moveTo(bracketCorners[1].x, bracketCorners[1].y + brLen);
+                ctx.lineTo(bracketCorners[1].x, bracketCorners[1].y);
+                ctx.lineTo(bracketCorners[1].x - brLen, bracketCorners[1].y);
+                ctx.stroke();
+
+                // Bottom-left bracket (expands up and right)
+                ctx.beginPath();
+                ctx.moveTo(bracketCorners[2].x, bracketCorners[2].y - brLen);
+                ctx.lineTo(bracketCorners[2].x, bracketCorners[2].y);
+                ctx.lineTo(bracketCorners[2].x + brLen, bracketCorners[2].y);
+                ctx.stroke();
+
+                // Bottom-right bracket (expands up and left)
+                ctx.beginPath();
+                ctx.moveTo(bracketCorners[3].x, bracketCorners[3].y - brLen);
+                ctx.lineTo(bracketCorners[3].x, bracketCorners[3].y);
+                ctx.lineTo(bracketCorners[3].x - brLen, bracketCorners[3].y);
+                ctx.stroke();
+
+                // Reset shadow
+                ctx.shadowColor = 'transparent';
                 ctx.shadowBlur = 0;
+            }
+
+            // Draw cursor indicator (only visible when hovering, transitions from + to X)
+            if (hoverAnim > 0.01) {
+                xIndicator.x += (mouseX - xIndicator.x) * 0.12;
+                xIndicator.y += (mouseY - xIndicator.y) * 0.12;
+
+                // Stretch based on velocity magnitude
+                const velocity = Math.sqrt(smoothedVX * smoothedVX + smoothedVY * smoothedVY);
+                const stretch = 1 + Math.min(velocity * 0.06, 0.6);
+
+                // Delay rotation until hoverAnim > 0.5 (after trail fades)
+                const delayedHover = Math.max(0, (hoverAnim - 0.5) * 2); // 0 to 1, delayed
+                const rotation = delayedHover * (Math.PI / 4); // 0 to 45 degrees, delayed
+                const indicatorAlpha = hoverAnim; // Fade in with hover
+
+                const xSize = 6 * stretch;
+                ctx.strokeStyle = `rgba(255, 51, 51, ${indicatorAlpha})`;
+                ctx.lineWidth = 2;
+                ctx.lineCap = 'square';
+
+                ctx.save();
+                ctx.translate(xIndicator.x, xIndicator.y);
+                ctx.rotate(rotation);
+                ctx.beginPath();
+                ctx.moveTo(0, -xSize);
+                ctx.lineTo(0, xSize);
+                ctx.moveTo(-xSize, 0);
+                ctx.lineTo(xSize, 0);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            // Motion blur on hovered element
+            if (hoveredEl) {
+                const speed = Math.sqrt(mouseVX * mouseVX + mouseVY * mouseVY);
+                const blur = Math.min(speed * 0.08, 2);
+                hoveredEl.style.filter = `blur(${blur}px)`;
+            } else {
+                // Reset filter on all interactives when none hovered
+                interactives.forEach(el => { el.style.filter = ''; });
             }
 
             requestAnimationFrame(drawFluidTrail);
@@ -988,6 +1152,18 @@
         pongCanvas.parentElement.addEventListener('mouseenter', () => { isHoveringPong = true; });
         pongCanvas.parentElement.addEventListener('mouseleave', () => { isHoveringPong = false; keyUp = false; keyDown = false; });
 
+        // Resize handler for pong (CSS handles display, internal resolution stays fixed)
+        window.addEventListener('resize', () => {
+            // Pong canvas scales via CSS, internal resolution stays 48x36
+            // Just ensure the canvas stays properly sized in its container
+            const container = pongCanvas.parentElement;
+            if (container) {
+                const rect = container.getBoundingClientRect();
+                pongCanvas.style.width = rect.width + 'px';
+                pongCanvas.style.height = rect.height + 'px';
+            }
+        });
+
         // Keyboard controls
         document.addEventListener('keydown', (e) => {
             if (!isHoveringPong) return;
@@ -1022,10 +1198,9 @@
                     aiL.targetY = predictBallY(paddleL.x + paddleL.w, aiL);
                     aiL.reactionDelay = 2 + Math.random() * 4;
                 }
-                const diff = aiL.targetY - (paddleL.y + paddleL.h / 2);
+                const diff = aiL.targetY - paddleL.y; // targetY is paddle TOP position
                 const boostL = aiL.accuracyBoost || 1;
-                const targetPos = paddleL.y + diff * 0.12 * boostL * dt;
-                paddleL.y += (targetPos - paddleL.y) * 0.3 * boostL;
+                paddleL.y += diff * 0.12 * boostL * dt; // Move toward target
             }
 
             // Smart predictive AI for right paddle
@@ -1034,10 +1209,9 @@
                 aiR.targetY = predictBallY(paddleR.x, aiR);
                 aiR.reactionDelay = 2 + Math.random() * 3;
             }
-            const diffR = aiR.targetY - (paddleR.y + paddleR.h / 2);
+            const diffR = aiR.targetY - paddleR.y; // targetY is paddle TOP position
             const boostR = aiR.accuracyBoost || 1;
-            const targetPosR = paddleR.y + diffR * 0.15 * boostR * dt;
-            paddleR.y += (targetPosR - paddleR.y) * 0.35 * boostR;
+            paddleR.y += diffR * 0.12 * boostR * dt; // Move toward target
 
             // Predict where ball will be at paddle X position using real-time data
             function predictBallY(paddleX, ai) {
@@ -1214,21 +1388,49 @@
         const bgCanvas = document.getElementById('bg-canvas');
         const bgCtx = bgCanvas.getContext('2d');
 
-        function resizeBgCanvas() {
-            bgCanvas.width = window.innerWidth;
-            bgCanvas.height = window.innerHeight;
-        }
-        resizeBgCanvas();
-        window.addEventListener('resize', resizeBgCanvas);
-
         const particles = [];
         const particleCount = 60;
         const bgColors = ['#ff3333', '#cc2222', '#8b1a1f', '#5c0e10'];
 
-        let cursorX = bgCanvas.width / 2;
-        let cursorY = bgCanvas.height / 2;
+        let cursorX = window.innerWidth / 2;
+        let cursorY = window.innerHeight / 2;
         let parallaxX = 0;
         let parallaxY = 0;
+        let isResizing = false;
+        let resizeTimeout;
+
+        function resizeBgCanvas() {
+            // Disable parallax during resize
+            isResizing = true;
+            clearTimeout(resizeTimeout);
+
+            const oldWidth = bgCanvas.width || window.innerWidth;
+            const oldHeight = bgCanvas.height || window.innerHeight;
+            const newWidth = window.innerWidth;
+            const newHeight = window.innerHeight;
+
+            bgCanvas.width = newWidth;
+            bgCanvas.height = newHeight;
+
+            // Scale all particle positions proportionally to new size
+            const scaleX = newWidth / oldWidth;
+            const scaleY = newHeight / oldHeight;
+            for (let p of particles) {
+                p.x *= scaleX;
+                p.y *= scaleY;
+            }
+
+            // Reset parallax during resize
+            parallaxX = 0;
+            parallaxY = 0;
+
+            // Re-enable parallax after resize completes
+            resizeTimeout = setTimeout(() => {
+                isResizing = false;
+            }, 100);
+        }
+        resizeBgCanvas();
+        window.addEventListener('resize', resizeBgCanvas);
 
         for (let i = 0; i < particleCount; i++) {
             const isCube = Math.random() < 0.3; // 30% are cubes
@@ -1338,11 +1540,13 @@
             bgCtx.fillStyle = '#0b0b0b';
             bgCtx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
 
-            // Smooth parallax interpolation
-            const targetParallaxX = (cursorX - bgCanvas.width / 2) * 0.1;
-            const targetParallaxY = (cursorY - bgCanvas.height / 2) * 0.1;
-            parallaxX += (targetParallaxX - parallaxX) * 0.1;
-            parallaxY += (targetParallaxY - parallaxY) * 0.1;
+            // Smooth parallax interpolation (disabled during resize)
+            if (!isResizing) {
+                const targetParallaxX = (cursorX - bgCanvas.width / 2) * 0.2;
+                const targetParallaxY = (cursorY - bgCanvas.height / 2) * 0.2;
+                parallaxX += (targetParallaxX - parallaxX) * 0.1;
+                parallaxY += (targetParallaxY - parallaxY) * 0.1;
+            }
 
             for (let p of particles) {
                 p.x += p.vx;
@@ -1509,6 +1713,7 @@
         // === AUDIO VISUALIZER ONLY ===
         // Visualizer shows synthetic Bad Apple pattern
         // No external audio - visualizer runs standalone
+        let audioIntensity = 0;
 
         function triggerMonochromeMode() {
             if (isMonochrome) {
@@ -1531,7 +1736,6 @@
         let analyser = null;
         let micStream = null;
         let isMicMode = false;
-        let audioIntensity = 0;
 
         // Press 'M' to toggle microphone mode
         document.addEventListener('keydown', async (e) => {
